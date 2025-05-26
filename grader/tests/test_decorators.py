@@ -29,7 +29,7 @@ def testcase(category: str = 'general', score: float = 0.0):
                     pass
                 
                 out = hash_result(func(BayesNet))
-                assert out == solution_path.read_text(), ""
+                assert out == solution_path.read_text(), "Wrong output"
                 return True
             except Exception as e:
                 print(e)
