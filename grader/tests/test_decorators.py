@@ -30,10 +30,9 @@ def testcase(category: str = 'general', score: float = 0.0):
                 
                 out = hash_result(func(BayesNet))
                 assert out == solution_path.read_text(), "Wrong output"
-                return True
+                return True, None
             except Exception as e:
-                print(e)
-                return False
+                return False, e
         wrapper.__name__ = func.__name__
         all_tests[category].append((wrapper, score))
         return wrapper
@@ -56,10 +55,12 @@ def run_tests(BayesNet, categories: Set[str] = None):
             cat_score_total, cat_score_earned = 0.0, 0.0
 
             for i, (test_func, score) in enumerate(tests, 1):
-                result = test_func(BayesNet)
+                result, reason = test_func(BayesNet)
                 passed = "✅" if result else "❌"
 
                 print(f"  [{passed}] Test `{test_func.__name__}` | Score: {score:.2f}")
+                if not result and reason is not None:
+                    print(f"      Reason: {reason}")
 
                 cat_total += 1
                 cat_score_total += score
