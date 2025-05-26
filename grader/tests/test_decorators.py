@@ -73,14 +73,14 @@ def run_tests(BayesNet, categories: Set[str] = None):
             earned_score += cat_score_earned
 
             print("-" * 30)
-            print(f"  ✔️  Passed: {cat_passed}/{cat_total}")
+            print(f"  ✅ Passed: {cat_passed}/{cat_total}")
             print(f"  🏅 Score : {cat_score_earned:.2f} / {cat_score_total:.2f}")
 
     print("\n============================")
-    print("✅ OVERALL SUMMARY")
+    print("📝 OVERALL SUMMARY")
     print("============================")
     print(f"🧪 Total Tests Run  : {total_tests}")
-    print(f"✔️  Tests Passed     : {passed_tests}")
+    print(f"✅ Tests Passed     : {passed_tests}")
     print(f"🏅 Total Score Earned: {earned_score:.2f} / {total_score:.2f}")
     print("============================\n")
 
