@@ -66,7 +66,7 @@ def independent_instance(BayesNet):
     n_runs = 10
     res = {}
     for i in range(n_runs):
-        instances = make_binary_instances(random.randint(3, 5))
+        instances = make_binary_instances(random.randint(3, 10))
         parents = { var: [] for var in instances.keys() }
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
@@ -80,7 +80,7 @@ def independent_event(BayesNet):
     n_runs = 10
     res = {}
     for i in range(n_runs):
-        instances = make_binary_instances(random.randint(3, 5))
+        instances = make_binary_instances(random.randint(3, 10))
         parents = { var: [] for var in instances.keys() }
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
@@ -94,7 +94,7 @@ def independent_condition(BayesNet):
     n_runs = 10
     res = {}
     for i in range(n_runs):
-        instances = make_binary_instances(random.randint(3, 5))
+        instances = make_binary_instances(random.randint(3, 10))
         parents = { var: [] for var in instances.keys() }
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
@@ -128,7 +128,7 @@ def markov_instance(BayesNet):
     n_runs = 10
     res = {}
     for i in range(n_runs):
-        instances = make_binary_instances(random.randint(3, 5))
+        instances = make_binary_instances(random.randint(3, 10))
         parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
         parents['A'] = []
         cpts = random_cpts(instances, parents)
@@ -143,7 +143,7 @@ def markov_event(BayesNet):
     n_runs = 10
     res = {}
     for i in range(n_runs):
-        instances = make_binary_instances(random.randint(3, 5))
+        instances = make_binary_instances(random.randint(3, 10))
         parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
         parents['A'] = []
         cpts = random_cpts(instances, parents)
@@ -158,9 +158,82 @@ def markov_condition(BayesNet):
     n_runs = 10
     res = {}
     for i in range(n_runs):
-        instances = make_binary_instances(random.randint(3, 5))
+        instances = make_binary_instances(random.randint(3, 10))
         parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
         parents['A'] = []
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
+    return res
+
+@testcase(category='binary', score=0.0)
+def dag(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_binary_instances(random.randint(3, 5))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, ord(var) - ord('A')))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        numtests = 5
+        res[i] = {
+            "instance": [bn.instance_prob(instance) for instance in random_instance(instances, numtests)],
+            "event": [bn.event_prob(event) for event in random_event(instances, numtests)],
+            "condition": [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, numtests)],
+        }
+    return res
+
+@testcase(category='binary', score=0.0)
+def dag_instance(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_binary_instances(random.randint(3, 10))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, random.randint(0, ord(var) - ord('A'))))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
+    return res
+
+@testcase(category='binary', score=0.0)
+def dag_event(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_binary_instances(random.randint(3, 10))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, random.randint(0, ord(var) - ord('A'))))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
+    return res
+
+@testcase(category='binary', score=0.0)
+def dag_condition(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_binary_instances(random.randint(3, 10))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, random.randint(0, ord(var) - ord('A'))))
+            for var in instances.keys()
+        }
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
 
