@@ -7,6 +7,8 @@ from pathlib import Path
 THIS_FILE_PATH = Path(__file__).resolve()
 answers_dir = THIS_FILE_PATH.parent.parent / "answers"
 answers_dir.mkdir(parents=True, exist_ok=True)
+outputs_dir = THIS_FILE_PATH.parent.parent / "outputs"
+outputs_dir.mkdir(parents=True, exist_ok=True)
 
 # Registry: category -> list of (test_func, score)
 all_tests: dict[str, list[Tuple[Callable, float]]] = defaultdict(list)
@@ -40,7 +42,10 @@ def testcase(category: str = 'general', score: float = 0.0):
                 except ImportError:
                     pass
                 
-                out = hash_result(func(BayesNet))
+                out = func(BayesNet)
+                output_path = outputs_dir / f"{func.__name__}.txt"
+                output_path.write_text(json.dumps(round_floats(out), indent=2, sort_keys=True))
+                out = hash_result(out)
                 assert out == solution_path.read_text(), "Wrong output"
                 return True, None
             except Exception as e:
