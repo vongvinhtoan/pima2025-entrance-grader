@@ -11,9 +11,20 @@ answers_dir.mkdir(parents=True, exist_ok=True)
 # Registry: category -> list of (test_func, score)
 all_tests: dict[str, list[Tuple[Callable, float]]] = defaultdict(list)
 
+def round_floats(obj, digits=4):
+    if isinstance(obj, float):
+        return round(obj, digits)
+    elif isinstance(obj, dict):
+        return {k: round_floats(v, digits) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [round_floats(i, digits) for i in obj]
+    elif isinstance(obj, set):
+        return [round_floats(i, digits) for i in sorted(obj)]
+    else:
+        return obj
+
 def hash_result(data: dict):
-    # return json.dumps(data, sort_keys=True)
-    data = json.dumps(data, sort_keys=True).encode('utf-8')
+    data = json.dumps(round_floats(data), sort_keys=True).encode('utf-8')
     return hashlib.sha256(data).hexdigest()
 
 def testcase(category: str = 'general', score: float = 0.0):
