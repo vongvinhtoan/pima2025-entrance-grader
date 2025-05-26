@@ -24,6 +24,7 @@ def round_floats(obj, digits=4):
         return obj
 
 def hash_result(data: dict):
+    # return json.dumps(round_floats(data), sort_keys=True)
     data = json.dumps(round_floats(data), sort_keys=True).encode('utf-8')
     return hashlib.sha256(data).hexdigest()
 
@@ -91,8 +92,8 @@ def run_tests(BayesNet, categories: Set[str] = None):
     print("\n============================")
     print("📝 OVERALL SUMMARY")
     print("============================")
-    print(f"🧪 Total Tests Run  : {total_tests}")
-    print(f"✅ Tests Passed     : {passed_tests}")
+    print(f"🧪 Total Tests Run   : {total_tests}")
+    print(f"✅ Tests Passed      : {passed_tests}")
     print(f"🏅 Total Score Earned: {earned_score:.2f} / {total_score:.2f}")
     print("============================\n")
 
