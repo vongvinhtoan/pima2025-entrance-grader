@@ -239,3 +239,203 @@ def dag_condition(BayesNet):
 
         res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
+
+@testcase(category="k-ary", score=0.0)
+def k_independent(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 5))
+        parents = { var: [] for var in instances.keys() }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        numtests = 5
+        res[i] = {
+            "instance": [bn.instance_prob(instance) for instance in random_instance(instances, numtests)],
+            "event": [bn.event_prob(event) for event in random_event(instances, numtests)],
+            # "condition": [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, numtests)],
+            "condition": [bn.event_prob(event) for event, _ in random_conditional(instances, numtests)],
+        }
+    return res
+
+@testcase(category="k-ary", score=0.0)
+def k_independent_instance(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { var: [] for var in instances.keys() }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+        
+        res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
+    return res
+
+@testcase(category="k-ary", score=0.0)
+def k_independent_event(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { var: [] for var in instances.keys() }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+        
+        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
+    return res
+
+@testcase(category="k-ary", score=0.0)
+def k_independent_condition(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { var: [] for var in instances.keys() }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+        
+        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_markov(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 5))
+        parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
+        parents['A'] = []
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        numtests = 5
+        res[i] = {
+            "instance": [bn.instance_prob(instance) for instance in random_instance(instances, numtests)],
+            "event": [bn.event_prob(event) for event in random_event(instances, numtests)],
+            "condition": [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, numtests)],
+        }
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_markov_instance(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
+        parents['A'] = []
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_markov_event(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
+        parents['A'] = []
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_markov_condition(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { var: [chr(ord(var) - 1)] for var in instances.keys() }
+        parents['A'] = []
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_dag(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 5))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, ord(var) - ord('A')))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        numtests = 5
+        res[i] = {
+            "instance": [bn.instance_prob(instance) for instance in random_instance(instances, numtests)],
+            "event": [bn.event_prob(event) for event in random_event(instances, numtests)],
+            "condition": [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, numtests)],
+        }
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_dag_instance(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, random.randint(0, ord(var) - ord('A'))))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_dag_event(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, random.randint(0, ord(var) - ord('A'))))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
+    return res
+
+@testcase(category='k-ary', score=0.0)
+def k_dag_condition(BayesNet):
+    random.seed(42)
+    n_runs = 10
+    res = {}
+    for i in range(n_runs):
+        instances = make_k_ary_instances(random.randint(3, 10))
+        parents = { 
+            var: random.sample([chr(ord('A') + i) for i in range(ord(var) - ord('A'))], k = random.randint(0, random.randint(0, ord(var) - ord('A'))))
+            for var in instances.keys()
+        }
+        cpts = random_cpts(instances, parents)
+        bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
+
+        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
+    return res

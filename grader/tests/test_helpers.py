@@ -19,6 +19,12 @@ def make_binary_instances(n):
         for i in range(n)
     }
 
+def make_k_ary_instances(n):
+    return {
+        chr(ord('A') + i): {c+chr(ord('a')+i) for c in random.sample(['+', '-', '*', '&', '$'], random.randint(2, random.randint(2, 5)))}
+        for i in range(n)
+    }
+
 def random_instance(instances, numtests):
     inst = list(it.product(*instances.values()))
     for _ in range(numtests):
