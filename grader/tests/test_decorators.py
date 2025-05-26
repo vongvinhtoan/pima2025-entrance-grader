@@ -4,10 +4,15 @@ import hashlib
 import json
 from pathlib import Path
 
+THIS_FILE_PATH = Path(__file__).resolve()
+answers_dir = THIS_FILE_PATH.parent.parent / "answers"
+answers_dir.mkdir(parents=True, exist_ok=True)
+
 # Registry: category -> list of (test_func, score)
 all_tests: dict[str, list[Tuple[Callable, float]]] = defaultdict(list)
 
 def hash_result(data: dict):
+    # return json.dumps(data, sort_keys=True)
     data = json.dumps(data, sort_keys=True).encode('utf-8')
     return hashlib.sha256(data).hexdigest()
 
@@ -15,19 +20,16 @@ def testcase(category: str = 'general', score: float = 0.0):
     def decorator(func: Callable):
         def wrapper(BayesNet: type):
             try:
+                solution_path = answers_dir / f"{func.__name__}.txt"
                 try:
                     from ..solution import BayesNet as SolutionBayesNet
                     sol = hash_result(func(SolutionBayesNet))
-                    answers_dir = Path("../answers")
-                    answers_dir.mkdir(parents=True, exist_ok=True)
-                    (answers_dir / f"{func.__name__}.txt").write_text(sol)
-                    print("Yay")
+                    solution_path.write_text(sol)
                 except ImportError:
-                    print(f"Nayy")
                     pass
-
-
-                func(BayesNet)
+                
+                out = hash_result(func(BayesNet))
+                assert out == solution_path.read_text()
                 return True
             except Exception as e:
                 print(e)
