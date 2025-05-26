@@ -44,7 +44,7 @@ def testcase(category: str = 'general', score: float = 0.0):
                 
                 out = func(BayesNet)
                 output_path = outputs_dir / f"{func.__name__}.txt"
-                output_path.write_text(json.dumps(round_floats(out), indent=2, sort_keys=True))
+                output_path.write_text(json.dumps(round_floats(out, 6), indent=2, sort_keys=True))
                 out = hash_result(out)
                 assert out == solution_path.read_text(), "Wrong output"
                 return True, None
