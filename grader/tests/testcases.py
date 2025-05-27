@@ -162,7 +162,7 @@ def pima_island(BayesNet: type):
         "3.j": conditional_independent('R', 'K', ['C', 'G']),
     }
 
-@testcase(category="binary", score=0.0)
+@testcase(category="full", score=0.0)
 def independent(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -182,7 +182,7 @@ def independent(BayesNet):
         }
     return res
 
-@testcase(category="binary", score=0.0)
+@testcase(category="instance", score=1.0)
 def independent_instance(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -196,7 +196,7 @@ def independent_instance(BayesNet):
         res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
     return res
 
-@testcase(category="binary", score=0.0)
+@testcase(category="event", score=1.0)
 def independent_event(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -210,7 +210,7 @@ def independent_event(BayesNet):
         res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
-@testcase(category="binary", score=0.0)
+@testcase(category="conditional", score=0.5)
 def independent_condition(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -224,7 +224,7 @@ def independent_condition(BayesNet):
         res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='full', score=0.0)
 def markov(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -244,7 +244,7 @@ def markov(BayesNet):
         }
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='instance', score=1.0)
 def markov_instance(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -259,7 +259,7 @@ def markov_instance(BayesNet):
         res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='event', score=1.0)
 def markov_event(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -274,7 +274,7 @@ def markov_event(BayesNet):
         res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='conditional', score=0.5)
 def markov_condition(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -289,7 +289,7 @@ def markov_condition(BayesNet):
         res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='full', score=0.0)
 def dag(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -311,7 +311,7 @@ def dag(BayesNet):
         }
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='instance', score=1.0)
 def dag_instance(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -328,7 +328,7 @@ def dag_instance(BayesNet):
         res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='event', score=1.0)
 def dag_event(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -345,7 +345,7 @@ def dag_event(BayesNet):
         res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
-@testcase(category='binary', score=0.0)
+@testcase(category='conditional', score=0.5)
 def dag_condition(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -362,7 +362,7 @@ def dag_condition(BayesNet):
         res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
-@testcase(category="k-ary", score=0.0)
+@testcase(category="full", score=0.0)
 def k_independent(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -382,7 +382,7 @@ def k_independent(BayesNet):
         }
     return res
 
-@testcase(category="k-ary", score=0.0)
+@testcase(category="instance", score=0.4)
 def k_independent_instance(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -396,7 +396,7 @@ def k_independent_instance(BayesNet):
         res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
     return res
 
-@testcase(category="k-ary", score=0.0)
+@testcase(category="event", score=0.4)
 def k_independent_event(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -410,7 +410,7 @@ def k_independent_event(BayesNet):
         res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
-@testcase(category="k-ary", score=0.0)
+@testcase(category="conditional", score=0.2)
 def k_independent_condition(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -424,7 +424,7 @@ def k_independent_condition(BayesNet):
         res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='full', score=0.0)
 def k_markov(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -444,7 +444,7 @@ def k_markov(BayesNet):
         }
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='instance', score=0.4)
 def k_markov_instance(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -459,7 +459,7 @@ def k_markov_instance(BayesNet):
         res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='event', score=0.4)
 def k_markov_event(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -474,7 +474,7 @@ def k_markov_event(BayesNet):
         res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='conditional', score=0.2)
 def k_markov_condition(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -489,7 +489,7 @@ def k_markov_condition(BayesNet):
         res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='full', score=0.0)
 def k_dag(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -511,7 +511,7 @@ def k_dag(BayesNet):
         }
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='instance', score=0.2)
 def k_dag_instance(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -528,7 +528,7 @@ def k_dag_instance(BayesNet):
         res[i] = [bn.instance_prob(instance) for instance in random_instance(instances, 1)]
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='event', score=0.2)
 def k_dag_event(BayesNet):
     random.seed(42)
     n_runs = 10
@@ -545,7 +545,7 @@ def k_dag_event(BayesNet):
         res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
-@testcase(category='k-ary', score=0.0)
+@testcase(category='conditional', score=0.1)
 def k_dag_condition(BayesNet):
     random.seed(42)
     n_runs = 10
