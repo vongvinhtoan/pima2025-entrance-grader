@@ -207,7 +207,7 @@ def independent_event(BayesNet):
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
         
-        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
+        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
 @testcase(category="conditional", score=0.5)
@@ -221,7 +221,7 @@ def independent_condition(BayesNet):
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
         
-        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
+        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
 @testcase(category='full', score=0.0)
@@ -407,7 +407,7 @@ def k_independent_event(BayesNet):
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
         
-        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
+        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
     return res
 
 @testcase(category="conditional", score=0.2)
@@ -421,7 +421,7 @@ def k_independent_condition(BayesNet):
         cpts = random_cpts(instances, parents)
         bn = BayesNet(instances=instances, parents=parents, cpts=cpts)
         
-        res[i] = [bn.event_prob(event) for event in random_event(instances, 1)]
+        res[i] = [bn.conditional_prob(event, condition) for event, condition in random_conditional(instances, 1)]
     return res
 
 @testcase(category='full', score=0.0)
