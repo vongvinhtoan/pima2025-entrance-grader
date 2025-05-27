@@ -6,9 +6,7 @@ from pathlib import Path
 
 THIS_FILE_PATH = Path(__file__).resolve()
 answers_dir = THIS_FILE_PATH.parent.parent / "answers"
-answers_dir.mkdir(parents=True, exist_ok=True)
 outputs_dir = THIS_FILE_PATH.parent.parent / "outputs"
-outputs_dir.mkdir(parents=True, exist_ok=True)
 
 # Registry: category -> list of (test_func, score)
 all_tests: dict[str, list[Tuple[Callable, float]]] = defaultdict(list)
@@ -33,6 +31,8 @@ def hash_result(data: dict):
 def testcase(category: str = 'general', score: float = 0.0):
     def decorator(func: Callable):
         def wrapper(BayesNet: type):
+            answers_dir.mkdir(parents=True, exist_ok=True)
+            outputs_dir.mkdir(parents=True, exist_ok=True)
             try:
                 solution_path = answers_dir / f"{func.__name__}.txt"
                 try:
